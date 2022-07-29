@@ -1,0 +1,7 @@
+## Interface: 20504
+## Title: TrackingToggler
+## Notes: Toggles tracking types automatically
+## Author: miliarch
+## Version: 0.0.1
+
+TrackingToggler.lua
