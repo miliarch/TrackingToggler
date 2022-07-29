@@ -2,6 +2,6 @@
 ## Title: TrackingToggler
 ## Notes: Toggles tracking types automatically
 ## Author: miliarch
-## Version: 0.0.1
+## Version: 0.0.2
 
 TrackingToggler.lua
