@@ -54,7 +54,6 @@ function TrackingToggler:RepeatingTimer()
     if TrackingToggler.running == true then
         TrackingToggler.RunInterval();
         interval = TrackingToggler.interval + TrackingToggler.busyDelay
-        TrackingToggler.busyDelay = 0;  -- reset busyDelay if any was set in TrackingToggler:PlayerBusy()
         C_Timer.After(interval, function()
             TrackingToggler.RepeatingTimer();
         end)
@@ -75,6 +74,8 @@ end
 function TrackingToggler:RunInterval()
     local tracking = TrackingToggler:GetTracking();
     if (TrackingToggler:PlayerBusy() == false) then
+        -- player not busy - toggle tracking mode
+        TrackingToggler.busyDelay = 0;  -- reset busyDelay to 0
         if tracking ~= trackingModes[TrackingToggler.mode1] then
             setMode = trackingModes[TrackingToggler.mode1]
         else
@@ -83,6 +84,9 @@ function TrackingToggler:RunInterval()
         MuteSoundFile(clickSoundId);
         SetTracking(TrackingToggler:GetTrackingId(setMode), true);
         UnmuteSoundFile(clickSoundId);
+    else
+        -- player busy - set delay for next timer
+        TrackingToggler.busyDelay = TrackingToggler.interval;
     end
 end
 
@@ -95,8 +99,6 @@ function TrackingToggler:PlayerBusy()
 
     for k, v in pairs(status) do
         if (v == true) then
-            -- player busy - delay next timer by interval and return true
-            TrackingToggler.busyDelay = TrackingToggler.interval;
             return true
         end
     end
