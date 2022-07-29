@@ -21,4 +21,4 @@ Studying the code helped me better understand the lua scripting language (first 
 
 Unlike the addon it is modeled after, Tracking Toggler requires no third-party libraries, and provides no in-game user configuration. It is designed to perform a very specific task out of the box - toggle between profession tracking modes at a frequency and in situations that do not cause the player annoyance.
 
-*If the way this addon behaves causes you annoyance, please open an issue to report it. I might be able to fix it.*
+**If the way this addon behaves causes you annoyance, please open an issue to report it. I might be able to fix it.**
