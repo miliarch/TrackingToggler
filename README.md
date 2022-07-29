@@ -8,8 +8,8 @@ Use the `/tt` command to enable or disable automated tracking.
 
 ## Behavior
 
-While enabled, either the `Find Minerals` or `Find Herbs` spell will be cast every 5 seconds, depending on which is currently active on the player. Because casting these spells causes the global cooldown to fire, and this would be disruptive to normal gameplay, tracking mode is *not* switched in the following conditions:
-* When the player is in combat
+While enabled, either the `Find Minerals` or `Find Herbs` spell will be cast every 5 seconds, depending on which is currently active on the player. Because casting these spells causes the global cooldown to fire, and this would be disruptive to normal gameplay, tracking mode is **not** toggled in the following conditions:
+* When the player is in combat, unless the player is mounted
 
 ## The Story
 
