@@ -4,7 +4,7 @@ A World of Warcraft addon that automatically toggles between profession tracking
 
 ## Usage
 
-Use the `/tt` command to enable or disable automated tracking.
+Use the `/track` command to enable or disable automated tracking.
 
 ## Behavior
 

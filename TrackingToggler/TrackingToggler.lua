@@ -1,4 +1,4 @@
-SLASH_TRACKINGTOGGLER1 = '/tt';
+SLASH_TRACKINGTOGGLER1 = '/track';
 
 local trackingModes = {
     minerals = 136025,
