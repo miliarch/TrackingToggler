@@ -10,8 +10,9 @@ Use the `/track` command to enable or disable automated tracking.
 
 While enabled, either the `Find Minerals` or `Find Herbs` spell will be cast every 5 seconds, depending on which is currently active on the player. Because casting these spells causes the global cooldown to fire, and this would be disruptive to normal gameplay, tracking mode is **not** toggled in the following busy conditions:
 * When the player is in combat, unless the player is mounted
-* When the player is actively casting a spell
-* When the player is actively channeling a spell
+* When the player is casting or channeling a spell
+* When the player is resting
+* When the player has a living target
 
 If the player is detected as busy during a polling interval, a delay will be applied to the next polling timer interval to give the player some buffer space on the tail end of whatever made them busy.
 

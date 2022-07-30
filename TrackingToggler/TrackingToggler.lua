@@ -5,6 +5,11 @@ local trackingModes = {
     herbs =  133939
 }
 
+busyDelayExcludeTextures = {
+    mining = 136248,
+    herbing = 136065
+}
+
 clickSoundId = 567407;
 
 TrackingToggler = {}
@@ -12,10 +17,11 @@ TrackingToggler = {}
 function TrackingToggler:Initialize()
     TrackingToggler.mode1 = "minerals";
     TrackingToggler.mode2 = "herbs";
-    TrackingToggler.interval = "5";
+    TrackingToggler.interval = 5;
     TrackingToggler.running = false;
     TrackingToggler.busyDelay = 0;
-    print('Tracking Toggler: Use the /tt command to toggle automatic tracking.');
+    TrackingToggler.busyType = nil;
+    print('Tracking Toggler: Use the /track command to toggle automatic tracking.');
 end
 
 TrackingToggler:Initialize();
@@ -73,9 +79,8 @@ end
 
 function TrackingToggler:RunInterval()
     local tracking = TrackingToggler:GetTracking();
-    if (TrackingToggler:PlayerBusy() == false) then
-        -- player not busy - toggle tracking mode
-        TrackingToggler.busyDelay = 0;  -- reset busyDelay to 0
+    TrackingToggler:UpdateBusyAttributes()
+    if (TrackingToggler.busyType == nil) then
         if tracking ~= trackingModes[TrackingToggler.mode1] then
             setMode = trackingModes[TrackingToggler.mode1]
         else
@@ -84,26 +89,48 @@ function TrackingToggler:RunInterval()
         MuteSoundFile(clickSoundId);
         SetTracking(TrackingToggler:GetTrackingId(setMode), true);
         UnmuteSoundFile(clickSoundId);
-    else
-        -- player busy - set delay for next timer
-        TrackingToggler.busyDelay = TrackingToggler.interval;
     end
 end
 
-function TrackingToggler:PlayerBusy()
+function TrackingToggler:UpdateBusyAttributes()
     status = {
         combat = UnitAffectingCombat("player") == true and IsMounted() == false,
         casting = UnitCastingInfo('player') ~= nil,
-        channeling = UnitChannelInfo('player') ~= nil
+        channeling = UnitChannelInfo('player') ~= nil,
+        resting = IsResting(),
+        targeting = UnitExists('target') and not UnitIsDeadOrGhost('target')
     }
 
+    TrackingToggler.busyType = nil;
     for k, v in pairs(status) do
         if (v == true) then
-            return true
+            TrackingToggler.busyType = k;
+            break;
         end
     end
 
-    return false
+    TrackingToggler.busyDelay = TrackingToggler:CalcBusyDelay()
+end
+
+function TrackingToggler:CalcBusyDelay()
+    local busyTypeInfoFunction = {
+        casting = UnitCastingInfo,
+        channeling = UnitChannelInfo
+    }
+    local busyType = TrackingToggler.busyType;
+    if (busyType == 'casting' or busyType == 'channeling') then
+        name, text, texture = busyTypeInfoFunction[busyType]('player')
+        for k, v in pairs(busyDelayExcludeTextures) do
+            if (v == texture) then
+                return 0;
+            end
+        end
+    elseif (busyType == 'resting') then
+        return TrackingToggler.interval * 6;
+    elseif (busyType == nil) then
+        return 0
+    end
+    return TrackingToggler.interval;
 end
 
 function SlashCmdList.TRACKINGTOGGLER()
