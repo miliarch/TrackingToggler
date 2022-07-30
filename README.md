@@ -13,6 +13,7 @@ While enabled, either the `Find Minerals` or `Find Herbs` spell will be cast eve
 * When the player is casting or channeling a spell
 * When the player is resting
 * When the player has a living target
+* When the player is dead
 
 If the player is detected as busy during a polling interval, a delay will be applied to the next polling timer interval to give the player some buffer space on the tail end of whatever made them busy.
 

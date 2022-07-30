@@ -98,7 +98,8 @@ function TrackingToggler:UpdateBusyAttributes()
         casting = UnitCastingInfo('player') ~= nil,
         channeling = UnitChannelInfo('player') ~= nil,
         resting = IsResting(),
-        targeting = UnitExists('target') and not UnitIsDeadOrGhost('target')
+        targeting = UnitExists('target') and not UnitIsDeadOrGhost('target'),
+        ghost = UnitIsDeadOrGhost('player')
     }
 
     TrackingToggler.busyType = nil;
@@ -125,7 +126,7 @@ function TrackingToggler:CalcBusyDelay()
                 return 0;
             end
         end
-    elseif (busyType == 'resting') then
+    elseif (busyType == 'resting' or busyType == 'ghost') then
         return TrackingToggler.interval * 6;
     elseif (busyType == nil) then
         return 0
